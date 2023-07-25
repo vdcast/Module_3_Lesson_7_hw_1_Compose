@@ -1,7 +1,5 @@
 package com.example.module_3_lesson_7_hw_1_compose.ui
 
-import android.view.Gravity
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,29 +8,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.module_3_lesson_7_hw_1_compose.viewmodel.AppViewModel
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import com.example.module_3_lesson_7_hw_1_compose.R
 import com.example.module_3_lesson_7_hw_1_compose.ui.theme.Blue50
+import com.example.module_3_lesson_7_hw_1_compose.viewmodel.AppViewModel
 
 
 @Composable
@@ -86,10 +78,23 @@ fun MyApp(
         Button(
             modifier = Modifier.fillMaxWidth(0.5f),
             onClick = {
-                appViewModel.startStopwatch()
+                when (appUiState.stopwatchStarted) {
+                    true -> appViewModel.pauseStopwatch()
+                    false -> appViewModel.startStopwatch()
+                }
+
             }
         ) {
-            Text(text = stringResource(id = R.string.button_start))
+            Text(
+                text = stringResource(
+                    id = when {
+                        !appUiState.stopwatchStarted &&
+                                appUiState.currentMilliseconds.toInt() >= 1 -> R.string.button_resume
+                        !appUiState.stopwatchStarted -> R.string.button_start
+                        else -> R.string.button_pause
+                    }
+                )
+            )
         }
         Button(
             modifier = Modifier.fillMaxWidth(0.5f),
@@ -108,11 +113,13 @@ fun MyApp(
                 Text(text = stringResource(id = R.string.alert_title))
             },
             text = {
-                Text(stringResource(
-                    id = R.string.alert_text,  appUiState.currentHours,
-                    appUiState.currentMinutes,  appUiState.currentSeconds,
-                    appUiState.currentMilliseconds
-                ))
+                Text(
+                    stringResource(
+                        id = R.string.alert_text, appUiState.currentHours,
+                        appUiState.currentMinutes, appUiState.currentSeconds,
+                        appUiState.currentMilliseconds
+                    )
+                )
             },
             confirmButton = {
                 Button(

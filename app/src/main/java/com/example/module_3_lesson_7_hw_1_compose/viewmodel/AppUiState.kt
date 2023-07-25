@@ -5,6 +5,6 @@ data class AppUiState(
     val currentMinutes: String = "",
     val currentSeconds: String = "",
     val currentMilliseconds: String = "",
-    val stopwatchPaused: Boolean = false,
+    val stopwatchStarted: Boolean = false,
     val stopwatchCompleted: Boolean = false
 )
