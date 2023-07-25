@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Module_3_Lesson_7_hw_1_Compose</string>
+    <string name="header">Stopwatch != Timer</string>
+    <string name="time_showing_less_than_hour">%s : %s : %s</string>
+    <string name="time_showing_more_than_hour">%s : %s : %s : %s</string>
+    <string name="button_start">Start</string>
+    <string name="button_stop">Stop</string>
+    <string name="alert_title">Stopwatch time</string>
+    <string name="alert_text">%s : %s : %s : %s</string>
+    <string name="alert_button">OK</string>
+
 </resources>
